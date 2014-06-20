@@ -544,7 +544,7 @@ class Client(object):
             data = ""
             quitmsg = x
         if data:
-            self.__readbuffer += data
+            self.__readbuffer += bytes.decode(data)
             self.__parse_read_buffer()
             self.__timestamp = time.time()
             self.__sent_ping = False
@@ -553,7 +553,7 @@ class Client(object):
 
     def socket_writable_notification(self):
         try:
-            sent = self.socket.send(self.__writebuffer)
+            sent = self.socket.send(str.encode(self.__writebuffer))
             self.server.print_debug(
                 "[%s:%d] <- %r" % (
                     self.host, self.port, self.__writebuffer[:sent]))
